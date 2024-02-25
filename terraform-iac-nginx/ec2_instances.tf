@@ -1,14 +1,25 @@
 # Generate SSH Key Pair for EC2 instances
+#resource "tls_private_key" "ec2_ssh_key" {
+#  algorithm = "RSA"
+#  rsa_bits  = 2048
+#}
+
 resource "tls_private_key" "ec2_ssh_key" {
-  algorithm = "RSA"
-  rsa_bits  = 2048
+  algorithm = "ED25519"
 }
 
 # Upload Public Key to AWS
+#resource "aws_key_pair" "ec2_key_pair" {
+#  key_name   = var.ssh_key_name
+#  public_key = tls_private_key.ec2_ssh_key.public_key_openssh
+#}
+
 resource "aws_key_pair" "ec2_key_pair" {
-  key_name   = var.ssh_key_name
+  key_name   = local.private_key_filename
   public_key = tls_private_key.ec2_ssh_key.public_key_openssh
 }
+
+
 
 # EC2 instance
 resource "aws_instance" "nginx_instance" {
