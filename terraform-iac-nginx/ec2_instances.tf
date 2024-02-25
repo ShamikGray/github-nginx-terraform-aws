@@ -121,9 +121,9 @@ resource "null_resource" "configure_web_app" {
   provisioner "remote-exec" {
     inline = [
       "sudo yum -y update",
-      "sleep 15",
-      "sudo yum -y install nginx",
+      "sudo amazon-linux-extras install nginx1 -y",  # Install Nginx using Amazon Linux Extras
       "sudo systemctl start nginx",
+      "sudo systemctl enable nginx",  # Ensure Nginx starts on boot
       "sudo chown -R ec2-user:ec2-user /var/www/html",
       "chmod +x *.sh",
       "./userdata.sh",
@@ -134,7 +134,7 @@ resource "null_resource" "configure_web_app" {
       "nohup python3 app.py &",
       "sleep 15"
     ]
-
+  
     connection {
       type        = "ssh"
       user        = "ec2-user"
