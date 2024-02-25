@@ -1,57 +1,51 @@
-# Generate SSH Key Pair for EC2 instances
 resource "tls_private_key" "ec2_ssh_key" {
   algorithm = "ED25519"
 }
 
-# Upload Public Key to AWS
 resource "aws_key_pair" "ec2_key_pair" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.ec2_ssh_key.public_key_openssh
 }
 
-# EC2 instance
 resource "aws_instance" "nginx_instance" {
   count                       = 2
-  ami                         = data.aws_ami.ubuntu.id
+  ami                         = data.aws_ami.ubuntu.id  # Use Ubuntu AMI
   instance_type               = var.instance_type
-  key_name                    = aws_key_pair.ec2_key_pair.key_name  # Using the SSH key pair generated
+  key_name                    = aws_key_pair.ec2_key_pair.key_name
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public_subnet[count.index].id
   availability_zone           = var.availability_zones[count.index]
-  #vpc_security_group_ids      = [aws_security_group.instance_sg.id]  # Specify the security group ID here
-  vpc_security_group_ids      = [aws_security_group.instance_sg.id, aws_security_group.project_alb_sg.id]  # Add the ALB security group here
+  vpc_security_group_ids      = [aws_security_group.instance_sg.id, aws_security_group.project_alb_sg.id]
 
   tags = {
     Name    = "nginx-instance-${count.index}"
     Owner   = "Shamik"
-    Project = "DevOpsTest"
+    Project = "ProjectDevOps"
   }
-  
+
   volume_tags = {
     Name    = "nginx-instance-${count.index}"
     Owner   = "Shamik"
-    Project = "DevOpsTest"
+    Project = "ProjectDevOps"
   }
 
   user_data = <<-EOF
     #!/bin/bash
-    sudo yum -y update
-    sudo yum -y install amazon-cloudwatch-agent
+    sudo apt update
+    sudo apt install -y amazon-cloudwatch-agent  # Install CloudWatch agent
     # Additional setup commands go here
   EOF
 
   lifecycle {
-    ignore_changes = [tags]  # Ignore changes to tags
+    ignore_changes = [tags]
   }
 }
 
-# Security Group add default sg here
 resource "aws_security_group" "instance_sg" {
   name = var.instance_security_group_name
 
   vpc_id = data.aws_vpc.default.id
 
-  # Allow inbound HTTP requests and SSH
   ingress {
     from_port   = var.http_server_port
     to_port     = var.http_server_port
@@ -66,7 +60,6 @@ resource "aws_security_group" "instance_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Allow all outbound requests
   egress {
     from_port   = 0
     to_port     = 0
@@ -79,7 +72,6 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
-# Create an SSM parameter for CloudWatch agent configuration
 resource "aws_ssm_parameter" "cloudwatch_config" {
   name        = "/amazon-cloudwatch-agent/config.json"
   description = "CloudWatch agent configuration"
@@ -109,11 +101,11 @@ resource "null_resource" "configure_web_app" {
 
   provisioner "file" {
     source      = "files/"
-    destination = "/home/ec2-user/"
+    destination = "/home/ubuntu/"  # Change destination user to ubuntu
 
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"  # Change user to ubuntu
       private_key = tls_private_key.ec2_ssh_key.private_key_pem
       host        = aws_eip.nginx_instance_public_ip[count.index].public_ip
     }
@@ -138,7 +130,7 @@ resource "null_resource" "configure_web_app" {
 
     connection {
       type        = "ssh"
-      user        = "ubuntu"  # Change user to ubuntu
+      user        = "ubuntu"
       private_key = tls_private_key.ec2_ssh_key.private_key_pem
       host        = aws_instance.nginx_instance[count.index].public_ip
     }
@@ -152,7 +144,6 @@ resource "aws_eip_association" "nginx_instance_public_ip" {
 }
 
 resource "aws_eip" "nginx_instance_public_ip" {
-  count    = 2  # Adjust count based on the number of Elastic IPs required
+  count    = 2
   instance = aws_instance.nginx_instance[count.index].id
 }
-
