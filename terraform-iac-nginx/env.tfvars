@@ -31,4 +31,4 @@ vpc_cidr = "10.1.0.0/16"
 ami_owner_id = "amazon"
 
 # Prefix for resource names
-prefix = "Project-DevOps-Assignment"
+prefix = "Project-DevOps"
