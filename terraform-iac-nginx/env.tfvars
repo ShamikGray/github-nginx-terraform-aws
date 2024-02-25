@@ -31,4 +31,4 @@ allowed_http_cidr = "0.0.0.0/0"
 ami_owner_id = "amazon"
 
 # Prefix for resource names
-prefix = "Project-DevOps"
+prefix = "Shamik-proj"
