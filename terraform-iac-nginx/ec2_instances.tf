@@ -1,15 +1,12 @@
-# Define the private key for SSH
 resource "tls_private_key" "ec2_ssh_key" {
   algorithm = "ED25519"
 }
 
-# Create an SSH key pair
 resource "aws_key_pair" "ec2_key_pair" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.ec2_ssh_key.public_key_openssh
 }
 
-# Launch EC2 instances
 resource "aws_instance" "nginx_instance" {
   count                       = 2
   ami                         = data.aws_ami.ubuntu.id  # Use Ubuntu AMI
@@ -52,11 +49,9 @@ resource "aws_instance" "nginx_instance" {
     initial_position = start_of_file
     log_group_name = "/var/log/messages"
     EOF2
-
+    
     systemctl restart awslogsd
     systemctl enable awslogsd
-
-    # Additional setup commands go here
   EOF
 
   lifecycle {
@@ -64,7 +59,6 @@ resource "aws_instance" "nginx_instance" {
   }
 }
 
-# Define security group for EC2 instances
 resource "aws_security_group" "instance_sg" {
   name = var.instance_security_group_name
 
@@ -96,7 +90,6 @@ resource "aws_security_group" "instance_sg" {
   }
 }
 
-# Configure CloudWatch agent parameter
 resource "aws_ssm_parameter" "cloudwatch_config" {
   name        = "/amazon-cloudwatch-agent/config.json"
   description = "CloudWatch agent configuration"
@@ -106,10 +99,6 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
       logs_collected = {
         files = {
           collect_list = [{
-            file_path        = "/var/log/app.log"
-            log_group_name   = "/var/log/app.log"
-            log_stream_name  = "{instance_id}"
-          }, {
             file_path        = "/var/log/messages"
             log_group_name   = "/var/log/messages"
             log_stream_name  = "{instance_id}"
@@ -120,7 +109,6 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
   })
 }
 
-# Provision resources for configuring the web app
 resource "null_resource" "configure_web_app" {
   count     = length(aws_instance.nginx_instance)
   depends_on = [aws_eip_association.nginx_instance_public_ip]
@@ -167,14 +155,12 @@ resource "null_resource" "configure_web_app" {
   }
 }
 
-# Associate Elastic IP with EC2 instances
 resource "aws_eip_association" "nginx_instance_public_ip" {
   count        = length(aws_instance.nginx_instance)
   instance_id  = aws_instance.nginx_instance[count.index].id
   allocation_id = aws_eip.nginx_instance_public_ip[count.index].id
 }
 
-# Allocate Elastic IPs for EC2 instances
 resource "aws_eip" "nginx_instance_public_ip" {
   count    = 2
   instance = aws_instance.nginx_instance[count.index].id
