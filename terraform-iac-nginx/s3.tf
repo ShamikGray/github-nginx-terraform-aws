@@ -6,7 +6,7 @@
 #  count = var.create_bucket && length(data.aws_s3_bucket.existing_bucket) == 0 ? 1 : 0
 #  bucket = "project-terraform-state-backup"
 #}
-#
+# 
 
 # It's recommended to create the S3 bucket manually before running Terraform commands like init, plan, or apply.
 # This allows Terraform to directly use the pre-existing bucket for storing its state files,
