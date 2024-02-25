@@ -24,8 +24,8 @@ ssh_key_name = "Shamik-key"
 allowed_ssh_cidr = "0.0.0.0/0"
 allowed_http_cidr = "0.0.0.0/0"
 
-# VPC CIDR Block
-#vpc_cidr = "10.1.0.0/16"
-
 # Prefix for resource names
 prefix = "Shamik-proj"
+
+# AMI Owner ID
+ami_owner_id = "ubuntu"
