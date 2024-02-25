@@ -2,6 +2,11 @@ Assignment: - by Shamik Guha Ray
 Successfully deployed the necessary infrastructure setup to execute below assignment:
 <img width="667" alt="tasks" src="https://github.com/ShamikGray/github-nginx-terraform-aws/assets/158448051/26ce8db0-9898-421a-9187-bf80fdfab4a8">
 
+Final Terraform-Apply for you to review which was used to deploy the overall infra:
+https://github.com/ShamikGray/github-nginx-terraform-aws/actions/runs/8039482447/job/21956548174
+
+Final Terraform-Plan for you to review which was used to deploy the overall infra:
+https://github.com/ShamikGray/github-nginx-terraform-aws/actions/runs/8039482448/job/21956548173
 
 Deployment Steps:
 
