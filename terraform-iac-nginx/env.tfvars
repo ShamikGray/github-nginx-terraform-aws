@@ -8,8 +8,8 @@ subnet_cidr = ["172.31.66.0/24", "172.31.82.0/24"]
 availability_zones = ["ap-southeast-1a", "ap-southeast-1b"]
 
 # Application Load Balancer
-alb_name = "project-alb"
-alb_security_group_name = "project-alb-sg"
+alb_name = "project-alb-name"
+alb_security_group_name = "proj-alb-sg1"
 
 # EC2 Instance
 instance_type = "t2.micro"
