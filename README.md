@@ -37,11 +37,12 @@ By following these steps, the necessary infrastructure for the assignment was su
 Terraform Plan - GitHub Actions Workflow:
 ![TF_plan](https://github.com/ShamikGray/github-nginx-terraform-aws/assets/158448051/057cbe94-bce9-471e-bc68-09df2d5f0d2a)
 
+Link - https://github.com/ShamikGray/github-nginx-terraform-aws/actions/runs/8039482448/job/21956548173
 
 Terraform Apply - GitHub Action Workflow:
 ![TF-Apply](https://github.com/ShamikGray/github-nginx-terraform-aws/assets/158448051/20edf3ed-9aa9-4091-8d73-27b3850d8f7f)
 
-
+Link - https://github.com/ShamikGray/github-nginx-terraform-aws/actions/runs/8039482447/job/21956548174
 
 Post-Deployment Validation:
 
