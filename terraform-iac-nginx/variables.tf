@@ -39,6 +39,11 @@ variable "http_server_port" {
   type        = number
 }
 
+variable "ssh_port" {
+  description = "The port the server will use for SSH requests"
+  type        = number
+}
+
 variable "ssh_key_name" {
   description = "The name of the SSH key pair to use for EC2 instances"
 }

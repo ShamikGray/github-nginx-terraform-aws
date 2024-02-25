@@ -44,6 +44,40 @@ resource "aws_instance" "nginx_instance" {
   }
 }
 
+# Security Group
+resource "aws_security_group" "instance_sg" {
+  name = var.instance_security_group_name
+
+  vpc_id = data.aws_vpc.default.id
+
+  # Allow inbound HTTP requests and SSH
+  ingress {
+    from_port   = var.http_server_port
+    to_port     = var.http_server_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = var.ssh_port
+    to_port     = var.ssh_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  # Allow all outbound requests
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.prefix}-sg-instance"
+  }
+}
+
 # Create an SSM parameter for CloudWatch agent configuration
 resource "aws_ssm_parameter" "cloudwatch_config" {
   name        = "/amazon-cloudwatch-agent/config.json"

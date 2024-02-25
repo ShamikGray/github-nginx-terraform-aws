@@ -15,6 +15,7 @@ alb_security_group_name = "project-alb-sg"
 instance_type = "t2.micro"
 instance_security_group_name = "project-ec2-sg"
 http_server_port = 80
+ssh_port = 22
 
 # SSH Key Name
 ssh_key_name = "Shamik-key"
