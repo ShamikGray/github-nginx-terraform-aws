@@ -44,7 +44,7 @@ resource "aws_instance" "nginx_instance" {
   }
 }
 
-# Security Group add default sg
+# Security Group add default sg here
 resource "aws_security_group" "instance_sg" {
   name = var.instance_security_group_name
 
