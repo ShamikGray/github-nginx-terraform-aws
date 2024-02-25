@@ -27,8 +27,5 @@ allowed_http_cidr = "0.0.0.0/0"
 # VPC CIDR Block
 #vpc_cidr = "10.1.0.0/16"
 
-# AMI Owner ID
-ami_owner_id = "amazon"
-
 # Prefix for resource names
 prefix = "Shamik-proj"

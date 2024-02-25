@@ -33,25 +33,7 @@ resource "aws_instance" "nginx_instance" {
     #!/bin/bash
     sudo apt update
     sudo apt install -y amazon-cloudwatch-agent  # Install CloudWatch agent
-    cat <<-EOF2 > /etc/awslogs/awslogs.conf
-    [/var/log/app.log]
-    datetime_format = %b %d %H:%M:%S
-    file = /var/log/app.log
-    buffer_duration = 5000
-    log_stream_name = {instance_id}
-    initial_position = start_of_file
-    log_group_name = "/var/log/app.log"
-    [/var/log/messages]
-    datetime_format = %b %d %H:%M:%S
-    file = /var/log/messages
-    buffer_duration = 5000
-    log_stream_name = {instance_id}
-    initial_position = start_of_file
-    log_group_name = "/var/log/messages"
-    EOF2
-
-    systemctl restart awslogsd
-    systemctl enable awslogsd
+    # Additional setup commands go here
   EOF
 
   lifecycle {
@@ -94,7 +76,7 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
   name        = "/amazon-cloudwatch-agent/config.json"
   description = "CloudWatch agent configuration"
   type        = "String"
-  value       = jsonencode({
+  value = jsonencode({
     logs = {
       logs_collected = {
         files = {
@@ -107,9 +89,7 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
       }
     }
   })
-  overwrite   = true  # Set overwrite to true to allow Terraform to overwrite existing parameter value
 }
-
 
 resource "null_resource" "configure_web_app" {
   count     = length(aws_instance.nginx_instance)
