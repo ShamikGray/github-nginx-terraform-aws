@@ -58,5 +58,5 @@ cat > index.html << EOF
 </html>
 EOF
 
-# Copy the generated HTML file to the document root directory
+# Copy the generated HTML file to the document root directory  - update
 sudo cp index.html /var/www/html/index.html
