@@ -1,42 +1,33 @@
 # Generate SSH Key Pair for EC2 instances
-#resource "tls_private_key" "ec2_ssh_key" {
-#  algorithm = "RSA"
-#  rsa_bits  = 2048
-#}
-
 resource "tls_private_key" "ec2_ssh_key" {
   algorithm = "ED25519"
 }
 
 # Upload Public Key to AWS
-#resource "aws_key_pair" "ec2_key_pair" {
-#  key_name   = var.ssh_key_name
-#  public_key = tls_private_key.ec2_ssh_key.public_key_openssh
-#}
-
 resource "aws_key_pair" "ec2_key_pair" {
   key_name   = local.private_key_filename
   public_key = tls_private_key.ec2_ssh_key.public_key_openssh
 }
 
-
-
 # EC2 instance
 resource "aws_instance" "nginx_instance" {
-  count         = 2
-  ami           = data.aws_ami.amazon_linux_2.id
-  instance_type = var.instance_type
-  subnet_id     = aws_subnet.public_subnet[count.index].id
-  key_name      = aws_key_pair.ec2_key_pair.key_name  # Using the SSH key pair generated
+  count                       = 2
+  ami                         = data.aws_ami.amazon_linux_2.id
+  instance_type               = var.instance_type
+  key_name                    = aws_key_pair.ec2_key_pair.key_name  # Using the SSH key pair generated
+  associate_public_ip_address = true
+  subnet_id                   = aws_subnet.public_subnet[count.index].id
+  availability_zone           = var.availability_zones[count.index]
+  vpc_security_group_ids      = [aws_security_group.instance_sg.id]  # Specify the security group ID here
 
   tags = {
-    Name    = "web-${count.index}"
+    Name    = "nginx-instance-${count.index}"
     Owner   = "Shamik"
     Project = "DevOpsTest"
   }
   
   volume_tags = {
-    Name    = "web-${count.index}"
+    Name    = "nginx-instance-${count.index}"
     Owner   = "Shamik"
     Project = "DevOpsTest"
   }
