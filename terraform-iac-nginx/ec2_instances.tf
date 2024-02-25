@@ -12,7 +12,7 @@ resource "aws_key_pair" "ec2_key_pair" {
 # EC2 instance
 resource "aws_instance" "nginx_instance" {
   count                       = 2
-  ami                         = data.aws_ami.amazon_linux_2.id
+  ami                         = data.aws_ami.ubuntu.id
   instance_type               = var.instance_type
   key_name                    = aws_key_pair.ec2_key_pair.key_name  # Using the SSH key pair generated
   associate_public_ip_address = true
