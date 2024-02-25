@@ -18,7 +18,8 @@ resource "aws_instance" "nginx_instance" {
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public_subnet[count.index].id
   availability_zone           = var.availability_zones[count.index]
-  vpc_security_group_ids      = [aws_security_group.instance_sg.id]  # Specify the security group ID here
+  #vpc_security_group_ids      = [aws_security_group.instance_sg.id]  # Specify the security group ID here
+  vpc_security_group_ids      = [aws_security_group.instance_sg.id, aws_security_group.project_alb_sg.id]  # Add the ALB security group here
 
   tags = {
     Name    = "nginx-instance-${count.index}"
