@@ -19,9 +19,15 @@ resource "aws_instance" "nginx_instance" {
   key_name      = aws_key_pair.ec2_key_pair.key_name  # Using the SSH key pair generated
 
   tags = {
-    Name    = "${var.prefix}-instance-${count.index + 1}"
+    Name    = "web-${count.index}"
     Owner   = "Shamik"
-    Project = "Assignment_DevOps"
+    Project = "DevOpsTest"
+  }
+  
+  volume_tags = {
+    Name    = "web-${count.index}"
+    Owner   = "Shamik"
+    Project = "DevOpsTest"
   }
 
   user_data = <<-EOF
