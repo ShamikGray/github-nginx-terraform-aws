@@ -108,7 +108,6 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
     }
   })
   overwrite   = true  # Set overwrite to true to allow Terraform to overwrite existing parameter value
-  delete      = true  # Set delete to true to delete the old parameter before creating the new one
 }
 
 
