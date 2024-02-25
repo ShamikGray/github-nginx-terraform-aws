@@ -49,7 +49,7 @@ resource "aws_instance" "nginx_instance" {
     initial_position = start_of_file
     log_group_name = "/var/log/messages"
     EOF2
-    
+
     systemctl restart awslogsd
     systemctl enable awslogsd
   EOF
@@ -94,7 +94,7 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
   name        = "/amazon-cloudwatch-agent/config.json"
   description = "CloudWatch agent configuration"
   type        = "String"
-  value = jsonencode({
+  value       = jsonencode({
     logs = {
       logs_collected = {
         files = {
@@ -107,7 +107,10 @@ resource "aws_ssm_parameter" "cloudwatch_config" {
       }
     }
   })
+  overwrite   = true  # Set overwrite to true to allow Terraform to overwrite existing parameter value
+  delete      = true  # Set delete to true to delete the old parameter before creating the new one
 }
+
 
 resource "null_resource" "configure_web_app" {
   count     = length(aws_instance.nginx_instance)
