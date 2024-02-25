@@ -3,7 +3,7 @@
  # name                 = "${var.prefix}-EC2-Target-Group"
 #  port                 = var.http_server_port
 #  protocol             = "HTTP"
-#  vpc_id               = aws_vpc.project_vpc.id
+#  vpc_id               = data.aws_vpc.default.id
 #  target_type          = "instance"
 #  deregistration_delay = 60  # Optional: Configure deregistration delay
 #

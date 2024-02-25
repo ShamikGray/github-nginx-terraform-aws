@@ -48,7 +48,7 @@ resource "aws_instance" "nginx_instance" {
 resource "aws_security_group" "instance_sg" {
   name = var.instance_security_group_name
 
-  vpc_id = aws_vpc.project_vpc.id
+  vpc_id = data.aws_vpc.default.id
 
   # Allow inbound HTTP requests and SSH
   ingress {
@@ -154,3 +154,4 @@ resource "aws_eip" "nginx_instance_public_ip" {
   count    = 2  # Adjust count based on the number of Elastic IPs required
   instance = aws_instance.nginx_instance[count.index].id
 }
+

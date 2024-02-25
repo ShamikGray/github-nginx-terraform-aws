@@ -2,7 +2,7 @@
 resource "aws_security_group" "project_alb_sg" {
   name        = var.alb_security_group_name
   description = "Security group for the Application Load Balancer"
-  vpc_id      = aws_vpc.project_vpc.id  # Specify the VPC ID where the security group should be created
+  vpc_id      = data.aws_vpc.default.id  # Specify the VPC ID where the security group should be created
 
   # Allow inbound HTTP requests
   ingress {
@@ -39,7 +39,7 @@ resource "aws_lb_target_group" "ec2_target_group" {
   name                 = "${var.prefix}-EC2-Target-Group"
   port                 = var.http_server_port
   protocol             = "HTTP"
-  vpc_id               = aws_vpc.project_vpc.id
+  vpc_id               = data.aws_vpc.default.id
   target_type          = "instance"
   deregistration_delay = 60  # Optional: Configure deregistration delay
 

@@ -2,7 +2,7 @@
 #resource "aws_security_group" "instance_sg" {
 #  name        = var.instance_security_group_name
 #  description = "Enhanced Security group for EC2 Instances"
-#  vpc_id      = aws_vpc.project_vpc.id
+#  vpc_id      = data.aws_vpc.default.id
 #
 #  # Ingress rules
 #  ingress {
