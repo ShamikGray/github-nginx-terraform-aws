@@ -121,26 +121,26 @@ resource "null_resource" "configure_web_app" {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo yum -y update",
-      "sudo amazon-linux-extras install nginx1 -y",  # Install Nginx using Amazon Linux Extras
+      "sudo apt update",
+      "sudo apt install -y nginx",  # Install Nginx
       "sudo systemctl start nginx",
       "sudo systemctl enable nginx",  # Ensure Nginx starts on boot
-      "sudo chown -R ec2-user:ec2-user /var/www/html",
+      "sudo chown -R ubuntu:ubuntu /var/www/html",  # Change ownership to ubuntu user
       "chmod +x *.sh",
       "./userdata.sh",
       "sudo cp nginx.conf /etc/nginx/nginx.conf",
       "sudo systemctl restart nginx",
-      "sudo yum -y install python3-pip",
+      "sudo apt install -y python3-pip",  # Install Python 3 and pip
       "pip install flask",
       "nohup python3 app.py &",
       "sleep 15"
     ]
-  
+
     connection {
       type        = "ssh"
-      user        = "ec2-user"
+      user        = "ubuntu"  # Change user to ubuntu
       private_key = tls_private_key.ec2_ssh_key.private_key_pem
-      host        = aws_eip.nginx_instance_public_ip[count.index].public_ip
+      host        = aws_instance.nginx_instance[count.index].public_ip
     }
   }
 }
