@@ -42,7 +42,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color -var-file="terraform-iac-nginx/env.tfvars"
+        run: terraform plan -no-color -var-file="env.tfvars"
         continue-on-error: true
 
       - uses: actions/github-script@v6
