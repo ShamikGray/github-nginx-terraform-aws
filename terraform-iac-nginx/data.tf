@@ -20,6 +20,8 @@ data "aws_ami" "amazon_linux_2" {
   owners = ["amazon"]
 }
 
+
+
 # Retrieve the end IP address from the REST API
 #data "external" "vend_ip" {
 #  program = ["curl", var.vend_ip_api_url]

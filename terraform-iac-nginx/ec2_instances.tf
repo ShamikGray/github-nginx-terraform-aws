@@ -48,7 +48,7 @@ resource "aws_instance" "nginx_instance" {
 resource "aws_security_group" "instance_sg" {
   name = var.instance_security_group_name
 
-  vpc_id = data.aws_vpc.default.id
+  vpc_id = aws_vpc.project_vpc.id
 
   # Allow inbound HTTP requests and SSH
   ingress {
