@@ -56,9 +56,9 @@ variable "allowed_http_cidr" {
   description = "CIDR block to allow HTTP access to EC2 instances"
 }
 
-variable "vpc_cidr" {
-  description = "CIDR block for the VPC"
-}
+#variable "vpc_cidr" {
+ # description = "CIDR block for the VPC"
+#}
 
 variable "ami_owner_id" {
   description = "The owner ID of the desired AMI"
