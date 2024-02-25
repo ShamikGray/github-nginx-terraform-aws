@@ -68,3 +68,4 @@ Screenshot of the Content Served by Our Two Nginx EC2 Servers:
 
 Attached the README containing the steps to setup the s3 bucket before triggering the terraform init/plan/apply.
 ![Refer-README-s3](https://github.com/ShamikGray/github-nginx-terraform-aws/assets/158448051/7ed29795-72c5-494f-8e3b-3cba367ad7d1)
+ 
