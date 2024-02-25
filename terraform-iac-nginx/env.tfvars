@@ -1,8 +1,8 @@
 # AWS Region
 aws_region = "ap-southeast-1"
 
-# Subnet CIDR blocks
-subnet_cidr = ["172.31.48.0/24", "172.31.49.0/24"]
+# Subnet CIDR blocks for current default VPC CIDR which wont overlap with other existing subnets.
+subnet_cidr = ["172.31.33.0/24", "172.31.17.0/24"]
 
 # Availability Zones
 availability_zones = ["ap-southeast-1a", "ap-southeast-1b"]

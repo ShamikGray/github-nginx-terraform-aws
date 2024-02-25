@@ -8,7 +8,11 @@
 #}
 #
 
-#No need to  s3 bucket,
+# It's recommended to create the S3 bucket manually before running Terraform commands like init, plan, or apply.
+# This allows Terraform to directly use the pre-existing bucket for storing its state files,
+# preventing any issues related to bucket creation during Terraform execution.
+# By managing the bucket creation separately, you ensure that the bucket is set up correctly
+# and is available when needed by Terraform.
 
 
-# create pipeline stage and run via aws cli before running the terraform plan.
+#Refer ./github-nginx-terraform-aws/README.txt file to know how to create a s3 bucket.
